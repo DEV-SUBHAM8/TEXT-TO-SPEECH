@@ -1,0 +1,48 @@
+{
+  "info": {
+    "name": "Text-to-Speech API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{ "key": "baseUrl", "value": "http://127.0.0.1:8000" }],
+  "item": [
+    { "name": "Health", "request": { "method": "GET", "url": "{{baseUrl}}/api/health" } },
+    { "name": "Voices (all)", "request": { "method": "GET", "url": "{{baseUrl}}/api/voices" } },
+    { "name": "Voices (Hindi)", "request": { "method": "GET", "url": "{{baseUrl}}/api/voices?language=hi-IN" } },
+    {
+      "name": "TTS - success",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"text\": \"Welcome to our application.\",\n  \"language\": \"en-US\",\n  \"voice\": \"en-US-AriaNeural\"\n}" },
+        "url": "{{baseUrl}}/api/tts"
+      }
+    },
+    {
+      "name": "TTS - empty text (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"text\": \"   \",\n  \"language\": \"en-US\",\n  \"voice\": \"en-US-AriaNeural\"\n}" },
+        "url": "{{baseUrl}}/api/tts"
+      }
+    },
+    {
+      "name": "TTS - invalid language (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"text\": \"Hello\",\n  \"language\": \"xx-XX\",\n  \"voice\": \"en-US-AriaNeural\"\n}" },
+        "url": "{{baseUrl}}/api/tts"
+      }
+    },
+    {
+      "name": "TTS - voice does not match language (400)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"text\": \"Hello\",\n  \"language\": \"hi-IN\",\n  \"voice\": \"en-US-AriaNeural\"\n}" },
+        "url": "{{baseUrl}}/api/tts"
+      }
+    }
+  ]
+}
